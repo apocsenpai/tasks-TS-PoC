@@ -25,7 +25,7 @@ export function handleApplicationErrors(
     });
   }
 
-  if (err.name === "UserNotFound") {
+  if (err.name === "UserNotFound" || err.name === "TaskNotFound") {
     return res.status(httpStatus.NOT_FOUND).send({
       message: err.message,
     });

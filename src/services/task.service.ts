@@ -1,7 +1,7 @@
-import { TaskCreate } from "../utils/protocols/Task";
+import { TaskCreate, TaskId } from "../utils/protocols/Task";
 import dayjs from "dayjs";
 import taskRepository from "../repositories/task.repository";
-import { unprocessableContentError } from "@/errors";
+import { taskNotFound, unprocessableContentError } from "@/errors";
 
 async function create({
   name,
@@ -16,4 +16,28 @@ async function create({
   await taskRepository.create({ name, description, date, responsibleId });
 }
 
-export default { create };
+async function toogleTask({ id }: TaskId): Promise<void> {
+
+  const {
+    rows: [task],
+  } = await taskRepository.findById({ id });
+
+  if (!task) throw taskNotFound();
+
+  await (!task.status
+    ? taskRepository.updateStatusDone({ id })
+    : taskRepository.updateStatusUndone({ id }));
+}
+
+async function closeTask({ id }: TaskId): Promise<void> {
+
+  const {
+    rows: [task],
+  } = await taskRepository.findById({ id });
+
+  if (!task) throw taskNotFound();
+
+  await taskRepository.deleteTaskById({ id });
+}
+
+export default { create, toogleTask, closeTask };

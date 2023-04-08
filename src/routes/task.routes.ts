@@ -9,8 +9,7 @@ const taskRoutes: Router = Router();
 taskRoutes
   .use(authenticate)
   .post("/", validateSchema(taskSchema), taskController.create)
-  .put("/done")
-  .put("/undone")
-  .delete("/close");
+  .put("/:taskId/toggle", taskController.toogleTask)
+  .delete("/:taskId/close", taskController.closeTask);
 
 export default taskRoutes;

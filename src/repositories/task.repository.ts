@@ -17,4 +17,40 @@ async function create({
   );
 }
 
-export default { create };
+async function findById({ id }) {
+  return connection.query(
+    `
+      SELECT id, status FROM tasks WHERE id = $1
+  `,
+    [id]
+  );
+}
+
+async function updateStatusDone({ id }) {
+  return connection.query(
+    `
+    UPDATE tasks SET status = true WHERE id = $1
+  `,
+    [id]
+  );
+}
+
+async function updateStatusUndone({ id }) {
+  return connection.query(
+    `
+    UPDATE tasks SET status = false WHERE id = $1
+  `,
+    [id]
+  );
+}
+
+async function deleteTaskById({ id }) {
+  return connection.query(
+    `
+    DELETE FROM tasks WHERE id = $1
+  `,
+    [id]
+  );
+}
+
+export default { create, findById, updateStatusDone, updateStatusUndone, deleteTaskById };
