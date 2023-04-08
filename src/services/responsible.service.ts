@@ -4,8 +4,7 @@ import responsibleRepository from "../repositories/responsible.repository";
 import { userAlreadyExists, userNotFound } from "@/errors";
 import jwt from "jsonwebtoken";
 import { AuthToken } from "@/utils/protocols/AuthToken";
-
-const secretJwtHash: string = "543ff91101e4a35131c2a6eac8a560a7";
+import secretJwtHash from "@/utils/constants/secret";
 
 async function create({ name }: ResponsibleCreate): Promise<QueryResult<any>> {
   const { rowCount } = await responsibleRepository.findByName({ name });

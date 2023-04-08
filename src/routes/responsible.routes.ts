@@ -1,7 +1,7 @@
 import { Router } from "express";
-import responsibleController from "../controllers/responsible.controller";
-import { validateSchema } from "../middlewares/validateSchema.middleware";
-import responsibleSchema from "../schemas/responsible.schema";
+import responsibleController from "../controllers/responsible.controller.js";
+import { validateSchema } from "../middlewares/validateSchema.middleware.js";
+import responsibleSchema from "../schemas/responsible.schema.js";
 
 const responsibleRoutes: Router = Router();
 

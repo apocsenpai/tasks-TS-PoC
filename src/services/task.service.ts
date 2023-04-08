@@ -1,18 +1,19 @@
 import { TaskCreate } from "../utils/protocols/Task";
 import dayjs from "dayjs";
 import taskRepository from "../repositories/task.repository";
-import { QueryResult } from "pg";
+import { unprocessableContentError } from "@/errors";
 
 async function create({
   name,
   description,
   date,
-}: TaskCreate): Promise<QueryResult<any>> {
+  responsibleId,
+}: TaskCreate): Promise<void> {
   const dateIsNotValid: boolean = dayjs().isAfter(dayjs(date), "day");
 
-  if (dateIsNotValid) throw new Error();
+  if (dateIsNotValid) throw unprocessableContentError;
 
-  return taskRepository.create({ name, description, date });
+  await taskRepository.create({ name, description, date, responsibleId });
 }
 
 export default { create };

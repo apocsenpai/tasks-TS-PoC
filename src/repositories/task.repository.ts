@@ -6,13 +6,14 @@ async function create({
   name,
   description,
   date,
+  responsibleId,
 }: TaskCreate): Promise<QueryResult<any>> {
   return connection.query(
     `
-        INSERT INTO tasks (name, description, date)
-        VALUES ($1, $2, $3)
+        INSERT INTO tasks (name, description, date, responsible_id)
+        VALUES ($1, $2, $3, $4)
     `,
-    [name, description, date]
+    [name, description, date, responsibleId]
   );
 }
 

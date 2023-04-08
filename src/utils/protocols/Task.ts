@@ -8,4 +8,4 @@ export type Task = {
   createdAt: Date | string;
 };
 
-export type TaskCreate = Omit<Task, "id" | "status" | "responsibleId" | "createdAt">;
+export type TaskCreate = Omit<Task, "id" | "status" | "createdAt">;

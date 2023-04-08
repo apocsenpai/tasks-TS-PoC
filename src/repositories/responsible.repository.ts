@@ -1,6 +1,6 @@
 import connection from "../configs/db";
 import { QueryResult } from "pg";
-import { ResponsibleCreate } from "../utils/protocols/Responsible";
+import { Responsible, ResponsibleCreate } from "../utils/protocols/Responsible";
 
 async function create({ name }: ResponsibleCreate): Promise<QueryResult<any>> {
   return connection.query(
@@ -12,10 +12,12 @@ async function create({ name }: ResponsibleCreate): Promise<QueryResult<any>> {
   );
 }
 
-async function findByName({ name }: ResponsibleCreate): Promise<QueryResult<ResponsibleCreate>>{
+async function findByName({
+  name,
+}: ResponsibleCreate): Promise<QueryResult<Responsible>> {
   return connection.query(
     `
-        SELECT name FROM responsibles WHERE name = $1
+        SELECT * FROM responsibles WHERE name = $1
       `,
     [name]
   );

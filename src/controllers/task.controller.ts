@@ -1,16 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import { TaskCreate } from "../utils/protocols/Task";
 import taskService from "../services/task.service";
+import httpStatus from "http-status";
+import { Responsible } from "@/utils/protocols/Responsible";
 
 async function create(req: Request, res: Response, next: NextFunction) {
     const createTaskData = req.body as TaskCreate;
+    const {id: responsibleId} = res.locals.user as Responsible;
 
     try {
-        await taskService.create(createTaskData);
+        await taskService.create({...createTaskData, responsibleId});
 
-        res.send('Okay');
+        res.sendStatus(httpStatus.CREATED);
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import responsibleRoutes from "./responsible.routes";
-import taskRoutes from "./task.routes";
+import responsibleRoutes from "./responsible.routes.js";
+import taskRoutes from "./task.routes.js";
 
 const routes: Router = Router();
 
