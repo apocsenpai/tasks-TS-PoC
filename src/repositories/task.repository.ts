@@ -53,4 +53,23 @@ async function deleteTaskById({ id }) {
   );
 }
 
-export default { create, findById, updateStatusDone, updateStatusUndone, deleteTaskById };
+async function findAll() {
+  return connection.query(
+    `
+    SELECT r.name,
+    COUNT(r.id) as "totalTasks"
+    FROM tasks t
+    JOIN responsibles r ON r.id = t.responsible_id
+    GROUP BY r.id;
+  `
+  );
+}
+
+export default {
+  create,
+  findById,
+  updateStatusDone,
+  updateStatusUndone,
+  deleteTaskById,
+  findAll,
+};

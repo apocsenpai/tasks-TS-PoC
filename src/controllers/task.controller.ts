@@ -33,15 +33,26 @@ async function toogleTask(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function closeTask(req: Request, res: Response, next: NextFunction){
-    const { taskId } = req.params as TaskIdParams;
+async function closeTask(req: Request, res: Response, next: NextFunction) {
+  const { taskId } = req.params as TaskIdParams;
 
-    try {
-        await taskService.closeTask({ id: Number(taskId) });
+  try {
+    await taskService.closeTask({ id: Number(taskId) });
 
-        res.sendStatus(httpStatus.OK);
-      } catch (error) {
-        next(error);
-      }
+    res.sendStatus(httpStatus.OK);
+  } catch (error) {
+    next(error);
+  }
 }
-export default { create, toogleTask, closeTask };
+
+async function listAll(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { rows: tasks } = await taskService.listAll();
+
+    res.send(tasks);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export default { create, toogleTask, closeTask, listAll };

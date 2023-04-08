@@ -1,7 +1,8 @@
-import { TaskCreate, TaskId } from "../utils/protocols/Task";
+import { TaskCreate, TaskId, TaskPerResponsible } from "../utils/protocols/Task";
 import dayjs from "dayjs";
 import taskRepository from "../repositories/task.repository";
 import { taskNotFound, unprocessableContentError } from "@/errors";
+import { QueryResult } from "pg";
 
 async function create({
   name,
@@ -40,4 +41,8 @@ async function closeTask({ id }: TaskId): Promise<void> {
   await taskRepository.deleteTaskById({ id });
 }
 
-export default { create, toogleTask, closeTask };
+async function listAll(): Promise<QueryResult<TaskPerResponsible>> {
+  return await taskRepository.findAll();
+}
+
+export default { create, toogleTask, closeTask, listAll };

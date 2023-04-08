@@ -8,6 +8,7 @@ const taskRoutes: Router = Router();
 
 taskRoutes
   .use(authenticate)
+  .get("/list", taskController.listAll)
   .post("/", validateSchema(taskSchema), taskController.create)
   .put("/:taskId/toggle", taskController.toogleTask)
   .delete("/:taskId/close", taskController.closeTask);
