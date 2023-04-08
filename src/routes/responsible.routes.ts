@@ -6,7 +6,8 @@ import responsibleSchema from "../schemas/responsible.schema";
 const responsibleRoutes: Router = Router();
 
 responsibleRoutes
-  .post("/create", validateSchema(responsibleSchema), responsibleController.create)
-  .post("/auth", );
+  .use(validateSchema(responsibleSchema))
+  .post("/create", responsibleController.create)
+  .post("/auth", responsibleController.signin);
 
 export default responsibleRoutes;
