@@ -25,9 +25,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
 
           const { name } = decoded as ResponsibleCreate;
 
-          const {
-            rows: [user],
-          } = await responsibleRepository.findByName({ name });
+          const user= await responsibleRepository.findByName({ name });
 
           if (!user) throw unauthorizedError();
 

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ResponsibleCreate } from "../utils/protocols/Responsible.js";
 import responsibleService from "../services/responsible.service.js";
-import { AuthToken } from "@/utils/protocols/AuthToken.js";
 
 async function create(req: Request, res: Response, next: NextFunction) {
   const createResponsibleData = req.body as ResponsibleCreate;

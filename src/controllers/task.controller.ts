@@ -7,12 +7,12 @@ import { Responsible } from "@/utils/protocols/Responsible";
 async function create(req: Request, res: Response, next: NextFunction) {
   const createTaskData = req.body as TaskCreate;
   const { id: responsibleId } = res.locals.user as Responsible;
-
   try {
     await taskService.create({ ...createTaskData, responsibleId });
 
     res.sendStatus(httpStatus.CREATED);
   } catch (error) {
+    console.log(error)
     next(error);
   }
 }
@@ -47,7 +47,7 @@ async function closeTask(req: Request, res: Response, next: NextFunction) {
 
 async function listAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const { rows: tasks } = await taskService.listAll();
+    const tasks = await taskService.listAll();
 
     res.send(tasks);
   } catch (error) {

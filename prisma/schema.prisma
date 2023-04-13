@@ -1,0 +1,28 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["filteredRelationCount"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model responsibles {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(80)
+  cpf        String    @db.VarChar(11)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  tasks      tasks[]
+}
+
+model tasks {
+  id             Int          @id @default(autoincrement())
+  name           String       @db.VarChar(80)
+  description    String
+  date           DateTime     @db.Date
+  responsible_id Int
+  status         Boolean      @default(false)
+  created_at     DateTime?    @default(now()) @db.Timestamp(6)
+  responsibles   responsibles @relation(fields: [responsible_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}

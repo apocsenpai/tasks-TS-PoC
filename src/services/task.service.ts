@@ -1,8 +1,10 @@
-import { TaskCreate, TaskId, TaskPerResponsible } from "../utils/protocols/Task";
+import { TaskCreate, TaskId } from "../utils/protocols/Task";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import taskRepository from "../repositories/task.repository";
 import { taskNotFound, unprocessableContentError } from "@/errors";
-import { QueryResult } from "pg";
+
+dayjs.extend(customParseFormat);
 
 async function create({
   name,
@@ -10,18 +12,23 @@ async function create({
   date,
   responsibleId,
 }: TaskCreate): Promise<void> {
-  const dateIsNotValid: boolean = dayjs().isAfter(dayjs(date), "day");
+  const dateIsNotValid: boolean = dayjs().isAfter(
+    dayjs(date, "DD/MM/YYYY"),
+    "day"
+  );
 
-  if (dateIsNotValid) throw unprocessableContentError;
+  if (dateIsNotValid) throw unprocessableContentError(["Data inválida"]);
 
-  await taskRepository.create({ name, description, date, responsibleId });
+  await taskRepository.create({
+    name,
+    description,
+    date: new Date(dayjs(date, "DD/MM/YYYY").format("YYYY-MM-DD")),
+    responsibleId,
+  });
 }
 
 async function toogleTask({ id }: TaskId): Promise<void> {
-
-  const {
-    rows: [task],
-  } = await taskRepository.findById({ id });
+  const task = await taskRepository.findById({ id });
 
   if (!task) throw taskNotFound();
 
@@ -31,17 +38,14 @@ async function toogleTask({ id }: TaskId): Promise<void> {
 }
 
 async function closeTask({ id }: TaskId): Promise<void> {
-
-  const {
-    rows: [task],
-  } = await taskRepository.findById({ id });
+  const task = await taskRepository.findById({ id });
 
   if (!task) throw taskNotFound();
 
   await taskRepository.deleteTaskById({ id });
 }
 
-async function listAll(): Promise<QueryResult<TaskPerResponsible>> {
+async function listAll() {
   return await taskRepository.findAll();
 }
 

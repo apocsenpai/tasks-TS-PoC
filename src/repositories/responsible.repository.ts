@@ -1,26 +1,20 @@
-import connection from "../configs/db";
-import { QueryResult } from "pg";
-import { Responsible, ResponsibleCreate } from "../utils/protocols/Responsible";
+import { responsibles } from "../configs/db";
+import { ResponsibleCreate } from "../utils/protocols/Responsible";
 
-async function create({ name }: ResponsibleCreate): Promise<QueryResult<any>> {
-  return connection.query(
-    `
-        INSERT INTO responsibles (name)
-        VALUES ($1)
-    `,
-    [name]
-  );
+async function create({ name }: ResponsibleCreate) {
+  return responsibles.create({
+    data: {
+      name,
+    },
+  });
 }
 
-async function findByName({
-  name,
-}: ResponsibleCreate): Promise<QueryResult<Responsible>> {
-  return connection.query(
-    `
-        SELECT * FROM responsibles WHERE name = $1
-      `,
-    [name]
-  );
+async function findByName({ name }: ResponsibleCreate) {
+  return responsibles.findFirst({
+    where: {
+      name,
+    },
+  });
 }
 
 export default { create, findByName };

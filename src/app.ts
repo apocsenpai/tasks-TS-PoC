@@ -1,6 +1,6 @@
 import express, { json, Request, Response } from "express";
 import { handleApplicationErrors } from "./middlewares/errors.middleware.js";
-import routes from "./routes/index.js";
+import routes from "@/routes";
 
 const app = express();
 

@@ -6,18 +6,18 @@ import jwt from "jsonwebtoken";
 import { AuthToken } from "@/utils/protocols/AuthToken";
 import secretJwtHash from "@/utils/constants/secret";
 
-async function create({ name }: ResponsibleCreate): Promise<QueryResult<any>> {
-  const { rowCount } = await responsibleRepository.findByName({ name });
+async function create({ name }: ResponsibleCreate) {
+  const result = await responsibleRepository.findByName({ name });
 
-  if (rowCount) throw userAlreadyExists();
+  if (result) throw userAlreadyExists();
 
   return responsibleRepository.create({ name });
 }
 
 async function signin({ name }: ResponsibleCreate): Promise<AuthToken> {
-  const { rowCount } = await responsibleRepository.findByName({ name });
+  const result = await responsibleRepository.findByName({ name });
 
-  if (!rowCount) throw userNotFound();
+  if (!result) throw userNotFound();
 
   const token = jwt.sign({ name }, secretJwtHash, { expiresIn: 86400 });
 
